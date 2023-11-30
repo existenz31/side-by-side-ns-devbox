@@ -47,7 +47,7 @@ const searchClient = algoliasearch(APP_ID, API_KEY);
       <div className="variant">
       <div className="variant-header">{header}</div>
         <div className="ais-Hits-list">
-          hits.map((hit, index) => (
+          {hits.map((hit, index) => (
             <div className="ais-Hits-item">
             <Hit hit={hit} />
               <div className="hit-index">
@@ -81,6 +81,7 @@ const searchClient = algoliasearch(APP_ID, API_KEY);
 
     return (
       <div class="container text-center">
+        <span>Hello World!</span>
         <InstantSearch searchClient={searchClient}>
           <div class="searchbox">
           <SearchBox />
@@ -99,7 +100,7 @@ const searchClient = algoliasearch(APP_ID, API_KEY);
             <div class="col">
             <h3>{INDICES_COLUMN_NAMES[0]}</h3>
               <Index indexName={INDICES[0]}>
-              <CustomConfigure removeWordsIf ={"allOptional"} />
+              <CustomConfigure removeWordsIfNoResults={"allOptional"} />
 							<Hits hitComponent={CustomHit}
             		transformItems={transformItems} />
           	</Index>
@@ -113,6 +114,7 @@ const searchClient = algoliasearch(APP_ID, API_KEY);
               />
 							<Hits hitComponent={CustomHit}
             		transformItems={transformItems} />
+                
           	</Index>
           </div>
             <div class="col">
