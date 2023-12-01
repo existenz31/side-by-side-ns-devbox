@@ -8,8 +8,6 @@ import {
   useConfigure
 } from "react-instantsearch";
 
-import { Popover } from 'bootstrap';
-
 import {
   APP_ID,
   API_KEY,
@@ -17,13 +15,23 @@ import {
   HIT_URL_REF, HIT_PER_PAGE, TYPO_TOLERANCE
 } from "./config.js";
 
-const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
-popoverList;
+import { Popover, OverlayTrigger, Button, Badge } from 'react-bootstrap';
+
 
 const searchClient = algoliasearch(APP_ID, API_KEY);
 
+
 function Hit({ hit }) {
+  const popover = (
+    <Popover>
+      <Popover.Header as="h3">Popover right</Popover.Header>
+      <Popover.Body>
+        And here s some <strong>amazing</strong> content.
+        right?
+      </Popover.Body>
+    </Popover>
+  );
+
   return (
     <div className="card"  >
       {/* <span className="badge text-bg-primary">Primary</span> */}
@@ -35,7 +43,10 @@ function Hit({ hit }) {
       <div className="card-footer text-body-secondary">
         <div >
           <span>{hit.position.index + 1} - {hit.objectID}</span>
-          <span className="badge bg-secondary float-end" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">New</span>
+          <OverlayTrigger trigger="hover" placement="bottom" overlay={popover}>
+            <Badge className="bg-secondary float-end">Info</Badge>
+          </OverlayTrigger>
+
         </div>
       </div>
     </div>
@@ -56,11 +67,24 @@ function CustomConfigure(props) {
   return null;
 }
 
+
 function App() {
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">Popover right</Popover.Header>
+      <Popover.Body>
+        And here s some <strong>amazing</strong> content.
+        right?
+      </Popover.Body>
+    </Popover>
+  );
 
   return (
     <div className="container text-center">
       <h1>Side by Side App by Algolia</h1>
+      <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+        <Button variant="success">Click me to see</Button>
+      </OverlayTrigger>
       <InstantSearch searchClient={searchClient}>
         <div className="searchbox">
           <SearchBox />
