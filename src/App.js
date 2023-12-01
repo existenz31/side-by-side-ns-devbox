@@ -1,13 +1,14 @@
 import "./App.css";
 import React from 'react';
-
 import algoliasearch from "algoliasearch/lite";
 import {
   InstantSearch,
   SearchBox,
   Index, Hits,
-  useConfigure, useHits
+  useConfigure
 } from "react-instantsearch";
+
+import { Popover } from 'bootstrap';
 
 import {
   APP_ID,
@@ -16,20 +17,29 @@ import {
   HIT_URL_REF, HIT_PER_PAGE, TYPO_TOLERANCE
 } from "./config.js";
 
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
+popoverList;
+
 const searchClient = algoliasearch(APP_ID, API_KEY);
 
 function Hit({ hit }) {
   return (
-    <div>
-      <span className="badge text-bg-primary">Primary</span>
-      <h4>{hit.productDisplayName}</h4>
-      <div className="article-container">
-        <div>
-          <p>{hit.categories[0].displayName}</p>
-        </div>
+    <div className="card"  >
+      {/* <span className="badge text-bg-primary">Primary</span> */}
+      <h5 className="card-header text-truncate">{hit.productDisplayName}</h5>
+      <div className="card-body">
+        <p className="card-text text-truncate">{hit.categories[0].displayName}</p>
         <img src={`${HIT_URL_REF}${hit.frontView}`} className="hit-image" alt="" />
       </div>
+      <div className="card-footer text-body-secondary">
+        <div >
+          <span>{hit.position.index + 1} - {hit.objectID}</span>
+          <span className="badge bg-secondary float-end" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">New</span>
+        </div>
+      </div>
     </div>
+
   );
 }
 
@@ -39,47 +49,6 @@ const transformItems = (items, { results }) => {
     position: { index, page: results.page },
   }));
 };
-
-// eslint-disable-next-line no-unused-vars
-function CustomHits(props) {
-  const { hits } = useHits(props);
-  const header = props.header;
-  return (
-    <div className="variant">
-      <div className="variant-header">{header}</div>
-      <div className="ais-Hits-list">
-        {hits.map((hit, index) => (
-          <div className="ais-Hits-item" key={index}>
-            <Hit hit={hit} />
-            <div className="hit-index">
-              {index + 1} - {hit.objectID}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CustomHit({ hit }) {
-  console.log(hit)
-  return (
-    // <div className="ais-Hits-item">
-    //   <Hit hit={hit} />
-    //   <div className="hit-index">
-    //     {hit.position.index + 1} - {hit.objectID}
-    //   </div>
-    // </div>
-    <div className="card" style="width: 18rem;">
-      <img src="..." className="card-img-top" alt="..." />
-      <div className="card-body">
-        <h5 className="card-title">Card title</h5>
-        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card content.</p>
-        <a href="#" className="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  );
-}
 
 function CustomConfigure(props) {
   // eslint-disable-next-line no-unused-vars
@@ -91,7 +60,7 @@ function App() {
 
   return (
     <div className="container text-center">
-      <span>Hello World 2!</span>
+      <h1>Side by Side App by Algolia</h1>
       <InstantSearch searchClient={searchClient}>
         <div className="searchbox">
           <SearchBox />
@@ -107,34 +76,34 @@ function App() {
           />
         </div>
         <div className="row align-items-start">
-          <div className="col">
+          <div className="col-4">
             <h3>{INDICES_COLUMN_NAMES[0]}</h3>
             <Index indexName={INDICES[0]}>
               <CustomConfigure removeWordsIfNoResults={"allOptional"} />
-              <Hits hitComponent={CustomHit}
+              <Hits hitComponent={Hit}
                 transformItems={transformItems} />
             </Index>
           </div>
-          <div className="col">
+          <div className="col-4">
             <h3>{INDICES_COLUMN_NAMES[1]}</h3>
             <Index indexName={INDICES[1]}>
               <CustomConfigure
                 removeWordsIfNoResults={"none"}
                 devFeatureFlags={{ neuralSearchAlpha: INDICES_ALPHA[1] }}
               />
-              <Hits hitComponent={CustomHit}
+              <Hits hitComponent={Hit}
                 transformItems={transformItems} />
 
             </Index>
           </div>
-          <div className="col">
+          <div className="col-4">
             <h3>{INDICES_COLUMN_NAMES[2]}</h3>
             <Index indexName={INDICES[2]}>
               <CustomConfigure
                 removeWordsIfNoResults={"none"}
                 devFeatureFlags={{ neuralSearchAlpha: INDICES_ALPHA[2] }}
               />
-              <Hits hitComponent={CustomHit}
+              <Hits hitComponent={Hit}
                 transformItems={transformItems} />
             </Index>
           </div>
@@ -144,6 +113,7 @@ function App() {
   );
 
 }
+
 
 export default App;
 
