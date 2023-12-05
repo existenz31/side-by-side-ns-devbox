@@ -59,3 +59,15 @@ h1 {
 .searchbox {
    margin-bottom: 1rem;
 }
+
+.badge-header {
+   position: absolute;
+   right: 0.5rem;
+   top: 0.5rem;
+}
+
+.badge-footer {
+   position: absolute;
+   right: 0.5rem;
+   bottom: 0.5rem;
+}
