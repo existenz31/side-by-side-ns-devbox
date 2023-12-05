@@ -13,7 +13,7 @@ import {
   API_KEY,
   INDICES,
   HIT_URL_REF, HIT_PER_PAGE, TYPO_TOLERANCE
-} from "./config.js";
+} from "./conf/config.js";
 
 import { Popover, OverlayTrigger, Badge, Card } from 'react-bootstrap';
 
