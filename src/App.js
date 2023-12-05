@@ -20,14 +20,7 @@ import { Popover, OverlayTrigger, Badge, Card } from 'react-bootstrap';
 
 const searchClient = algoliasearch(APP_ID, API_KEY);
 
-// {/* <Popover.Header as="h3">Popover right</Popover.Header> */}
-
 function RankingInfo({ ri }) {
-  // keywordScore
-  // neuralScore
-  // semanticScore
-  // userScore
-  // mergeInfo: {keyword, semantic}
   return (
     <div>
       <React.Fragment>
@@ -57,11 +50,6 @@ function RankingInfo({ ri }) {
     </div>
   )
 }
-// <span>{ri.semanticScore !== undefined ? 'semanticScore: ' + Number(ri.semanticScore).toFixed(2) : null}</span><br />
-// <span>{ri.neuralScore !== undefined ? 'neuralScore: ' + Number(ri.neuralScore).toFixed(2) : null}</span><br />
-// <span>{ri.mergeInfo !== undefined ? 'mergeInfo: ' + JSON.stringify(ri.mergeInfo) : null}</span>
-
-
 
 function Hit({ hit }) {
   const ri = hit._rankingInfo;
